@@ -1,22 +1,17 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
-  Activity,
-  Cpu,
-  Database,
-  Network,
-  AlertTriangle,
-  Bell,
-  Plus,
-  TrendingUp,
-  TrendingDown,
-  Eye,
-  Edit,
-  Trash2
-} from 'lucide-react'
+  Box, Typography, Button, Card, CardContent, Grid, Chip, LinearProgress,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow
+} from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import MemoryIcon from '@mui/icons-material/Memory'
+import StorageIcon from '@mui/icons-material/Storage'
+import DnsIcon from '@mui/icons-material/Dns'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+import WarningIcon from '@mui/icons-material/Warning'
 
 export default function MonitoringPage() {
   const [alerts] = useState([
@@ -29,7 +24,6 @@ export default function MonitoringPage() {
   const [memoryHistory, setMemoryHistory] = useState<number[]>([88, 89, 90, 91, 92, 91, 92, 92, 91, 92])
   const [networkHistory, setNetworkHistory] = useState<number[]>([35, 38, 36, 40, 38, 42, 38, 39, 37, 38])
 
-  // 模拟实时数据更新
   useEffect(() => {
     const interval = setInterval(() => {
       setCpuHistory(prev => [...prev.slice(1), 40 + Math.random() * 10])
@@ -40,197 +34,148 @@ export default function MonitoringPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold">监控告警</h1>
-            <p className="text-muted-foreground mt-1">实时监控系统状态和告警规则管理</p>
-          </div>
-          <Button size="sm">
-            <Plus className="w-4 h-4 mr-2" />
-            新建告警规则
-          </Button>
-        </div>
+    <Box sx={{ p: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', sm: 'center' }, gap: 2, mb: 3 }}>
+        <Box>
+          <Typography variant="h5" fontWeight="bold">监控告警</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>实时监控系统状态和告警规则管理</Typography>
+        </Box>
+        <Button variant="contained" startIcon={<AddIcon />}>新建告警规则</Button>
+      </Box>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="card-hover">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">CPU使用率</p>
-                  <p className="text-3xl font-bold text-foreground mt-2">45%</p>
-                </div>
-                <div className="p-3 bg-success-light rounded-xl">
-                  <Cpu className="w-6 h-6 text-success" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="card-hover">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">内存使用</p>
-                  <p className="text-3xl font-bold text-foreground mt-2">92%</p>
-                </div>
-                <div className="p-3 bg-destructive/10 rounded-xl">
-                  <Database className="w-6 h-6 text-destructive" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="card-hover">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">网络带宽</p>
-                  <p className="text-3xl font-bold text-foreground mt-2">38%</p>
-                </div>
-                <div className="p-3 bg-primary-light rounded-xl">
-                  <Network className="w-6 h-6 text-primary" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="card-hover">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">活跃告警</p>
-                  <p className="text-3xl font-bold text-foreground mt-2">2</p>
-                </div>
-                <div className="p-3 bg-warning-light rounded-xl">
-                  <AlertTriangle className="w-6 h-6 text-warning" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* 实时监控图表 */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* CPU使用率趋势 */}
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-primary" />
-                CPU使用率趋势
-              </CardTitle>
-            </CardHeader>
             <CardContent>
-              <div className="h-32 flex items-end justify-between gap-1">
-                {cpuHistory.map((value, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center">
-                    <div
-                      className="w-full bg-primary rounded-t transition-all duration-500"
-                      style={{ height: `${(value / 100) * 100}%` }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                <span>10分钟前</span>
-                <span className="font-semibold text-foreground">{cpuHistory[cpuHistory.length - 1].toFixed(1)}%</span>
-                <span>现在</span>
-              </div>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">CPU使用率</Typography>
+                  <Typography variant="h3" fontWeight="bold" sx={{ mt: 1 }}>45%</Typography>
+                </Box>
+                <Box sx={{ p: 2, borderRadius: 3, bgcolor: '#f0fdf4' }}>
+                  <MemoryIcon sx={{ color: 'success.main', fontSize: 32 }} />
+                </Box>
+              </Box>
             </CardContent>
           </Card>
-
-          {/* 内存使用趋势 */}
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Database className="w-4 h-4 text-destructive" />
-                内存使用趋势
-              </CardTitle>
-            </CardHeader>
             <CardContent>
-              <div className="h-32 flex items-end justify-between gap-1">
-                {memoryHistory.map((value, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center">
-                    <div
-                      className="w-full bg-destructive rounded-t transition-all duration-500"
-                      style={{ height: `${(value / 100) * 100}%` }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                <span>10分钟前</span>
-                <span className="font-semibold text-foreground">{memoryHistory[memoryHistory.length - 1].toFixed(1)}%</span>
-                <span>现在</span>
-              </div>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">内存使用</Typography>
+                  <Typography variant="h3" fontWeight="bold" sx={{ mt: 1 }}>92%</Typography>
+                </Box>
+                <Box sx={{ p: 2, borderRadius: 3, bgcolor: '#fef2f2' }}>
+                  <StorageIcon sx={{ color: 'error.main', fontSize: 32 }} />
+                </Box>
+              </Box>
             </CardContent>
           </Card>
-
-          {/* 网络带宽趋势 */}
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Network className="w-4 h-4 text-accent" />
-                网络带宽趋势
-              </CardTitle>
-            </CardHeader>
             <CardContent>
-              <div className="h-32 flex items-end justify-between gap-1">
-                {networkHistory.map((value, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center">
-                    <div
-                      className="w-full bg-accent rounded-t transition-all duration-500"
-                      style={{ height: `${(value / 100) * 100}%` }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                <span>10分钟前</span>
-                <span className="font-semibold text-foreground">{networkHistory[networkHistory.length - 1].toFixed(1)}%</span>
-                <span>现在</span>
-              </div>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">网络带宽</Typography>
+                  <Typography variant="h3" fontWeight="bold" sx={{ mt: 1 }}>38%</Typography>
+                </Box>
+                <Box sx={{ p: 2, borderRadius: 3, bgcolor: '#eff6ff' }}>
+                  <DnsIcon sx={{ color: 'primary.main', fontSize: 32 }} />
+                </Box>
+              </Box>
             </CardContent>
           </Card>
-        </div>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+          <Card>
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">活跃连接</Typography>
+                  <Typography variant="h3" fontWeight="bold" sx={{ mt: 1 }}>1,284</Typography>
+                </Box>
+                <Box sx={{ p: 2, borderRadius: 3, bgcolor: '#f5f3ff' }}>
+                  <TrendingUpIcon sx={{ color: '#7c3aed', fontSize: 32 }} />
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>告警规则列表</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {alerts.map(alert => (
-                <div key={alert.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-lg ${
-                      alert.status === 'critical' ? 'bg-destructive/10' :
-                      alert.status === 'warning' ? 'bg-warning-light' : 'bg-success-light'
-                    }`}>
-                      <Bell className={`w-5 h-5 ${
-                        alert.status === 'critical' ? 'text-destructive' :
-                        alert.status === 'warning' ? 'text-warning' : 'text-success'
-                      }`} />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">{alert.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        阈值: {alert.threshold} | 当前: {alert.current}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    <button className="p-2 hover:bg-muted rounded-lg"><Eye className="w-4 h-4" /></button>
-                    <button className="p-2 hover:bg-muted rounded-lg"><Edit className="w-4 h-4" /></button>
-                    <button className="p-2 hover:bg-destructive/10 rounded-lg"><Trash2 className="w-4 h-4 text-destructive" /></button>
-                  </div>
-                </div>
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, lg: 8 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>告警列表</Typography>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>告警名称</TableCell>
+                      <TableCell>指标</TableCell>
+                      <TableCell>阈值</TableCell>
+                      <TableCell>当前值</TableCell>
+                      <TableCell>状态</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {alerts.map((alert) => (
+                      <TableRow key={alert.id} hover>
+                        <TableCell>{alert.name}</TableCell>
+                        <TableCell>{alert.metric}</TableCell>
+                        <TableCell>{alert.threshold}</TableCell>
+                        <TableCell>{alert.current}</TableCell>
+                        <TableCell>
+                          <Chip
+                            label={alert.status === 'normal' ? '正常' : alert.status === 'critical' ? '严重' : '警告'}
+                            size="small"
+                            color={alert.status === 'normal' ? 'success' : alert.status === 'critical' ? 'error' : 'warning'}
+                            icon={alert.status !== 'normal' ? <WarningIcon /> : undefined}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>资源趋势</Typography>
+              {['CPU', '内存', '网络'].map((metric, idx) => (
+                <Box key={idx} sx={{ mb: 2 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                    <Typography variant="body2">{metric}</Typography>
+                    <Typography variant="body2" fontWeight="bold">
+                      {idx === 0 ? cpuHistory[9].toFixed(0) : idx === 1 ? memoryHistory[9].toFixed(0) : networkHistory[9].toFixed(0)}%
+                    </Typography>
+                  </Box>
+                  <LinearProgress
+                    variant="determinate"
+                    value={idx === 0 ? cpuHistory[9] : idx === 1 ? memoryHistory[9] : networkHistory[9]}
+                    sx={{
+                      height: 8,
+                      borderRadius: 4,
+                      bgcolor: '#e2e8f0',
+                      '& .MuiLinearProgress-bar': {
+                        borderRadius: 4,
+                        bgcolor: idx === 1 ? 'error.main' : 'primary.main'
+                      }
+                    }}
+                  />
+                </Box>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
