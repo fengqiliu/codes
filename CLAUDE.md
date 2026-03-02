@@ -15,11 +15,14 @@ npm run lint      # ESLint
 ### Java Backend
 ```bash
 # Run from backend/java/
+# Requires Java 17+
 mvn spring-boot:run          # start server on :8080
 mvn clean package            # build JAR
 mvn test                     # run tests
 mvn test -Dtest=ClassName    # run single test class
 ```
+
+**API Documentation:** Swagger UI available at `http://localhost:8080/swagger-ui.html`
 
 ### Python Backend
 ```bash
@@ -58,6 +61,7 @@ The Java backend proxies AI invocation requests to the Python service. The Pytho
 - Business errors throw `BusinessException` with codes from `common/ErrorCode.java`
 - JWT auth: stateless, HS256, configured via `jwt.*` in `application.yml`. The `JwtAuthenticationFilter` runs before every request. Public endpoints are whitelisted in `SecurityConfig`.
 - JPA `ddl-auto: validate` — schema must exist before startup. Run `database/init.sql` against PostgreSQL first.
+- Database schema: defined in `database/init.sql`
 - Required external services: PostgreSQL on 5432, Redis on 6379, RabbitMQ on 5672. The app will fail to start without them.
 - `OPENAI_API_KEY` env var required for Spring AI features (defaults to `sk-xxx` placeholder).
 
