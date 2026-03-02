@@ -142,6 +142,9 @@ const systemMetrics = [
 
 const sidebarItems = [
   { name: '控制台', icon: HomeIcon, active: true, path: '/' },
+  { name: '影像管理', icon: ImageIcon, active: false, path: '/images' },
+  { name: '诊断协作', icon: VisibilityIcon, active: false, path: '/collaboration' },
+  { name: '权限管理', icon: SecurityIcon, active: false, path: '/permissions' },
   { name: 'AI模型管理', icon: PsychologyIcon, active: false, path: '/models' },
   { name: '流程编排', icon: AccountTreeIcon, active: false, path: '/workflows' },
   { name: '用户管理', icon: PeopleIcon, active: false, path: '/users' },
@@ -166,7 +169,100 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f8fafc' }}>
-      {/* 侧边栏 */}
+      {/* 桌面端侧边栏 */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          display: { xs: 'none', md: 'block' },
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            borderRight: '1px solid #e2e8f0',
+          },
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 2 }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: 2,
+                background: 'linear-gradient(135deg, #2563eb 0%, #0d9488 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <PsychologyIcon sx={{ color: 'white', fontSize: 24 }} />
+            </Box>
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold">
+                医学影像AI
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                集成平台 V2.0
+              </Typography>
+            </Box>
+          </Box>
+
+          <List sx={{ px: 1 }}>
+            {sidebarItems.map((item) => (
+              <ListItem key={item.name} disablePadding sx={{ mb: 0.5 }}>
+                <ListItemButton
+                  component={Link}
+                  href={item.path}
+                  onClick={() => setActiveNav(item.name)}
+                  selected={activeNav === item.name}
+                  sx={{
+                    borderRadius: 2,
+                    '&.Mui-selected': {
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                      },
+                      '& .MuiListItemIcon-root': {
+                        color: 'white',
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <item.icon />
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+
+          <Divider sx={{ my: 2 }} />
+
+          <List sx={{ px: 1 }}>
+            <ListItem disablePadding sx={{ mb: 0.5 }}>
+              <ListItemButton sx={{ borderRadius: 2 }}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  <HelpOutlineIcon />
+                </ListItemIcon>
+                <ListItemText primary="帮助中心" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ borderRadius: 2, color: 'error.main' }}>
+                <ListItemIcon sx={{ minWidth: 40, color: 'error.main' }}>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="退出登录" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+
+      {/* 移动端侧边栏 */}
       <Drawer
         variant="temporary"
         open={sidebarOpen}
