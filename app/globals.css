@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Medical Tech Color Palette - Professional Blue Theme */
+    --background: 210 25% 97%;
+    --foreground: 215 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 12%;
+    
+    /* Primary - Medical Blue */
+    --primary: 210 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 210 100% 95%;
+    --primary-glow: 210 100% 60%;
+    
+    /* Secondary - Teal/Cyan for tech feel */
+    --secondary: 185 60% 45%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Success - Green for positive indicators */
+    --success: 160 70% 40%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 160 70% 95%;
+    
+    /* Warning - Amber */
+    --warning: 38 95% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 38 95% 95%;
+    
+    /* Muted tones */
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 15% 50%;
+    
+    /* Accent - Purple for AI/ML highlights */
+    --accent: 260 70% 55%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 260 70% 95%;
+    
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 210 100% 45%;
+    --radius: 0.75rem;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(185 60% 45%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(260 70% 55%) 0%, hsl(210 100% 45%) 100%);
+    --gradient-surface: linear-gradient(180deg, hsl(210 25% 98%) 0%, hsl(210 25% 95%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(215 25% 12% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(215 25% 12% / 0.07), 0 2px 4px -2px hsl(215 25% 12% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(215 25% 12% / 0.08), 0 4px 6px -4px hsl(215 25% 12% / 0.05);
+    --shadow-glow: 0 0 20px hsl(210 100% 45% / 0.15);
+    --shadow-card: 0 1px 3px hsl(215 25% 12% / 0.05), 0 1px 2px -1px hsl(215 25% 12% / 0.05);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+  .gradient-surface {
+    background: var(--gradient-surface);
+  }
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .glass-effect {
+    background: hsl(0 0% 100% / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-hover:hover {
+    @apply -translate-y-1;
+    box-shadow: var(--shadow-lg);
+  }
+}

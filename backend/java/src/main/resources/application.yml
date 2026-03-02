@@ -1,0 +1,129 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: medical-ai-platform
+  
+  # 数据源配置
+  datasource:
+    url: jdbc:postgresql://localhost:5432/medical_ai
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      connection-timeout: 20000
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Redis配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 
+      database: 0
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+  
+  # RabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 1
+  
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+# JWT配置
+jwt:
+  # 密钥至少256位(32字节)以支持HS256算法
+  secret: medical-ai-platform-jwt-secret-key-2026-very-long-and-secure-256-bits-key
+  # 访问令牌过期时间: 1小时
+  expiration: 3600000
+  # 刷新令牌过期时间: 7天
+  refresh-expiration: 604800000
+  header: Authorization
+  prefix: "Bearer "
+  issuer: medical-ai-platform
+
+# AI服务配置
+ai:
+  services:
+    llm:
+      endpoint: http://localhost:8001
+      timeout: 30000
+    image:
+      endpoint: http://localhost:8002
+      timeout: 60000
+    voice:
+      endpoint: http://localhost:8003
+      timeout: 30000
+
+# Spring AI配置
+spring.ai:
+  openai:
+    api-key: ${OPENAI_API_KEY:sk-xxx}
+    chat:
+      options:
+        model: gpt-4
+        temperature: 0.7
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.medical.ai: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+# SpringDoc配置
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
